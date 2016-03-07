@@ -1,0 +1,75 @@
+﻿<Window x:Class="Turn_Timer_WPF.View_Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Turn_Timer_WPF"
+        mc:Ignorable="d"
+        Title="Settings" Height="300" Width="200"
+        ResizeMode="NoResize">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <!-- Buttons -->
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Round time" TextWrapping="Wrap"
+                   ToolTip="How long a single round takes."/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding roundTime, Mode=TwoWay}"
+                 ToolTip="How long a single round takes."/>
+
+        <Separator Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" />
+        
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Round time is in seconds" TextWrapping="Wrap"
+                   ToolTip="Default: Minutes."/>
+        <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  IsChecked="{Binding isSeconds, Mode=TwoWay}"
+                  ToolTip="Default: Minutes."/>
+
+        <Separator Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" />
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Extra seconds for first player" TextWrapping="Wrap"
+                   ToolTip="Extra time for the first turn."/>
+        <TextBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center"
+                 Text="{Binding extraTime, Mode=TwoWay}"
+                 ToolTip="Extra time for the first turn."/>
+
+        <Separator Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="5" />
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Apply previous round's time difference to next round?" TextWrapping="Wrap" />
+        <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  IsChecked="{Binding useDiff, Mode=TwoWay}"/>
+
+        <Separator Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="7" />
+
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="Muted" TextWrapping="Wrap"
+                   ToolTip="Turn off sounds."/>
+        <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                  IsChecked="{Binding muted, Mode=TwoWay}"
+                  ToolTip="Turn off sounds."/>
+
+        <!--#region SAVE_CANCEL_BUTTONS -->
+        <Button Grid.Row="9" Grid.Column="0"
+                Content="Save" Width="85" Height="45" HorizontalAlignment="Left" VerticalAlignment="Center"
+            	Command="{Binding buttonCmd, Mode=OneWay}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+        <Button Grid.Row="9" Grid.Column="1"
+                Content="Cancel" Width="85" Height="45" HorizontalAlignment="Right" VerticalAlignment="Center"
+            	Command="{Binding buttonCmd, Mode=OneWay}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+        <!--#endregion -->
+    </Grid>
+</Window>
