@@ -10,8 +10,15 @@ using System.Diagnostics;
 
 namespace Turn_Timer_WPF.Models
 {
+    /// <summary>
+    /// Handles all button, checkbox, and other interactions by the user.
+    /// </summary>
     static class ICommandManager_Settings
     {
+        /// <summary>
+        /// For each button, determine what commands a given button is to execute.
+        /// </summary>
+        /// <returns>The appropriate command to execute.</returns>
         public static ICommand SetupButton()
         {
             Command cmd = new Command( formBtn =>
@@ -37,14 +44,14 @@ namespace Turn_Timer_WPF.Models
                     Console.Write( "// TODO : FIX ME", ex );
                     throw;
                 }
-
             }
-
             );
-
             return cmd;
         }
 
+        /// <summary>
+        /// Ensure that the application's settings are updated.
+        /// </summary>
         private static void SaveSettings()
         {
             Properties.Settings.Default.roundTime = Convert.ToInt16(ViewModel_Settings.vmInstance.roundTime);
@@ -53,6 +60,7 @@ namespace Turn_Timer_WPF.Models
             Properties.Settings.Default.mutedSound = ViewModel_Settings.vmInstance.muted;
             Properties.Settings.Default.useTimeDiff = ViewModel_Settings.vmInstance.useDiff;
 
+            // Audio confirmation of changes.
             if ( !Properties.Settings.Default.mutedSound )
                 System.Media.SystemSounds.Beep.Play();
         }

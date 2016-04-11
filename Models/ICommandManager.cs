@@ -10,8 +10,15 @@ using System.Diagnostics;
 
 namespace Turn_Timer_WPF.Models
 {
+    /// <summary>
+    /// Handles all button, checkbox, and other interactions by the user.
+    /// </summary>
     static class ICommandManager
     {
+        /// <summary>
+        /// For each button, determine what commands a given button is to execute.
+        /// </summary>
+        /// <returns>The appropriate command to execute.</returns>
         public static ICommand SetupButton()
         {
             Command cmd = new Command( formBtn =>
@@ -33,12 +40,17 @@ namespace Turn_Timer_WPF.Models
                         case "■":
                             TimerManager.StopTimer();
                             break;
-                        // TODO : Make this button's text a setting that can be changed.
-                        case "GO":
-                            TimerManager.GoTimer();
-                            break;
+                        //case Properties.Settings.Default.beginText:
+                        //    TimerManager.GoTimer();
+                        //    break;
                         default:
-                             throw new NotImplementedException( "Unrecognized Button." );
+                            // Determine if this is the only special case.
+                            if ( btn.Content.ToString() == Properties.Settings.Default.beginText )
+                            {
+                                TimerManager.GoTimer();
+                                break;
+                            }
+                            throw new NotImplementedException( "Unrecognized Button." );
                     }
                 }
                 catch ( Exception ex )
@@ -46,14 +58,14 @@ namespace Turn_Timer_WPF.Models
                     Console.Write( "// TODO : FIX ME", ex );
                     throw;
                 }
-
-            }
-            
-            );
-
+            });
             return cmd;
         }
 
+        /// <summary>
+        /// Scalable decision-function to determine hyperlink functionality.
+        /// </summary>
+        /// <returns>The correct command to execute.</returns>
         public static ICommand SetupHyperlink()
         {
             Command cmd = new Command( link =>
@@ -75,19 +87,20 @@ namespace Turn_Timer_WPF.Models
                     Console.Write( "// TODO : FIX ME", ex );
                     throw;
                 }
-
-            }
-
-                );
-
+            });
             return cmd;
         }
 
+        /// <summary>
+        /// Scalable decision-function to determine what text to display where.
+        /// </summary>
+        /// <returns>The correct text to display.</returns>
         public static ICommand SetupText()
         {
             Command cmd = new Command( formTxt =>
             {
                 string fieldText, uri = string.Empty;
+                // Determine if the caller is regular text or a link.
                 try
                 {
                     System.Windows.Controls.TextBlock txt = ( System.Windows.Controls.TextBlock ) formTxt;
@@ -97,7 +110,8 @@ namespace Turn_Timer_WPF.Models
                 {
                     System.Windows.Documents.Hyperlink lnk = ( System.Windows.Documents.Hyperlink ) formTxt;
                     fieldText = lnk.Tag.ToString();
-                    uri = lnk.NavigateUri.AbsoluteUri;                }
+                    uri = lnk.NavigateUri.AbsoluteUri;
+                }
 
                 try
                 {
@@ -126,10 +140,7 @@ namespace Turn_Timer_WPF.Models
                     Console.Write( "// TODO : FIX ME", ex );
                     throw;
                 }
-
-            }
-                );
-
+            });
             return cmd;
         }
     }

@@ -8,10 +8,8 @@ using System.Windows.Input;
 
 namespace Turn_Timer_WPF.Models
 {
-    // TODO : Is Command.cs needed?
     /// <summary>
     /// Wrapper class for bound commands to simplify WPF command binding.
-    /// This content came from the MovePlayer WPF project.
     /// </summary>
     class Command : ICommand
     {
