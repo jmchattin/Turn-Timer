@@ -10,6 +10,9 @@ using System.Windows.Input; // ICommand
 
 namespace Turn_Timer_WPF
 {
+    /// <summary>
+    /// Base class for the Settings popup window.
+    /// </summary>
     class ViewModel_Settings : INotifyPropertyChanged
     {
         #region VARIABLES
@@ -19,8 +22,6 @@ namespace Turn_Timer_WPF
 
         private ICommand _buttonCmd;
         public ICommand buttonCmd { get { return _buttonCmd; } set { _buttonCmd = value; } }
-
-        // TODO : Test look of checkboxes vs. Y/N radiobuttons.
 
         private int _roundTime = Properties.Settings.Default.roundTime;
         public string roundTime
@@ -55,6 +56,9 @@ namespace Turn_Timer_WPF
 
         #endregion // VARIABLES
 
+        /// <summary>
+        /// Initialization of callable instance and control setup.
+        /// </summary>
         public ViewModel_Settings()
         {
             vmInstance = this;
@@ -63,6 +67,10 @@ namespace Turn_Timer_WPF
             //this.chkbxCmd = Models.ICommandManager_Settings.SetupCheckbox();
         }
 
+        /// <summary>
+        /// Update the content of an object.
+        /// </summary>
+        /// <param name="name">The object to update.</param>
         public void OnPropertyChanged( string name )
         {
             if ( PropertyChanged != null )

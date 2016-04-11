@@ -10,6 +10,9 @@ using System.Windows.Input; // ICommand
 
 namespace Turn_Timer_WPF
 {
+    /// <summary>
+    /// Base VM for the primary window.
+    /// </summary>
     public class ViewModel : INotifyPropertyChanged
     {
         #region VARIABLES
@@ -42,6 +45,9 @@ namespace Turn_Timer_WPF
 
         #endregion // VARIABLES
 
+        /// <summary>
+        /// Initialize a callable instance of the VM, create a timer, and create the bindings to user controls.
+        /// </summary>
         public ViewModel()
         {
             vmInstance = this;
@@ -55,6 +61,10 @@ namespace Turn_Timer_WPF
 
         // TODO : Set-up a window-close method to close the settings window if the main window is closed.
 
+        /// <summary>
+        /// Update the content of an object.
+        /// </summary>
+        /// <param name="name">The object to update.</param>
         public void OnPropertyChanged( string name )
         {
             if ( PropertyChanged != null )
