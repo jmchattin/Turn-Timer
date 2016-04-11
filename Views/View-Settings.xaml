@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="200"
         ResizeMode="NoResize">
+    <!--<Window.Resources>
+        
+    </Window.Resources>-->
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -35,9 +38,15 @@
         
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Round time is in seconds" TextWrapping="Wrap"
                    ToolTip="Default: Minutes."/>
-        <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <RadioButton GroupName="isSeconds" IsChecked="True" Content="Yes" />
+            <Separator Width="5" Visibility="Hidden"/>
+            <RadioButton GroupName="isSeconds" Content="No" />
+            <!--<RadioButton GroupName="isSeconds" IsChecked="{Binding isSeconds, Converter={StaticResource BoolInverterConverter}}" Content="No" />-->
+        </StackPanel>
+        <!--<CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
                   IsChecked="{Binding isSeconds, Mode=TwoWay}"
-                  ToolTip="Default: Minutes."/>
+                  ToolTip="Default: Minutes."/>-->
 
         <Separator Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="3" />
 
