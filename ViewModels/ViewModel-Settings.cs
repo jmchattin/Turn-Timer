@@ -23,13 +23,13 @@ namespace Turn_Timer_WPF
         private ICommand _buttonCmd;
         public ICommand buttonCmd { get { return _buttonCmd; } set { _buttonCmd = value; } }
 
-        private int _roundTime = Properties.Settings.Default.roundTime;
+        private float _roundTime = Properties.Settings.Default.roundTime;
         public string roundTime
         {
             get { return _roundTime.ToString(); }
             set {
-                int result;
-                if ( int.TryParse( value, out result ) && result > 0 )
+                float result;
+                if ( float.TryParse( value, out result ) && result > 0 )
                     _roundTime = result; }
         }
 
@@ -54,6 +54,7 @@ namespace Turn_Timer_WPF
         private bool _useDiff = Properties.Settings.Default.useTimeDiff;
         public bool useDiff { get { return _useDiff; } set { _useDiff = value; } }
 
+        public BooleanConverter bC = new BooleanConverter();
         #endregion // VARIABLES
 
         /// <summary>
