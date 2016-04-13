@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 namespace Turn_Timer_WPF
 {
     /// <summary>
-    /// Interaction logic for View_Settings.xaml
+    /// Interaction logic for View-Settings.xaml
     /// </summary>
     public partial class View_Settings : Window
     {
