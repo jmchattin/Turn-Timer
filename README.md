@@ -1,11 +1,13 @@
 # Turn-Timer
 Turn-Timer WPF
 
-Author:		Jimmy Chattin
+Author:		    Jimmy Chattin
 
-Contact:	jmchattin@gmail.com
+Contact:	    jmchattin@gmail.com
 
-Website:  http://Make-Better-Games.blogspot.com/
+Website:      http://Make-Better-Games.blogspot.com/
+
+Last Update:  04/13/2016
 
 ## Contents
 1. Summary
@@ -34,4 +36,7 @@ This app is a personal project.  It answers the issue of players taking too long
 ## Todo's
 1. Create mobile-version of program.
 2. Add new sounds to the 'over-time' beeping.
-3. Optimize XAML layout.
+3. Add flashing when over time.
+4. Optimize XAML layout.
+5. Add random list of fun 'stop' verbage.
+6. Set-up window-close method to close the settings window when main window is closed.
