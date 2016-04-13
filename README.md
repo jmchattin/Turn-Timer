@@ -5,6 +5,8 @@ Author:		Jimmy Chattin
 
 Contact:	jmchattin@gmail.com
 
+Website:  http://Make-Better-Games.blogspot.com/
+
 ## Contents
 1. Summary
 2. Setup
