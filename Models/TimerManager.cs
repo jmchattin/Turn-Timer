@@ -22,9 +22,11 @@ namespace Turn_Timer_WPF.Models
         // TODO : Hit-up adding a debug feature to the program.
 
         // Timer values.
-        private static TimeSpan roundTime;
         private static TimeSpan overflow;
         private static TimeSpan resetTime;
+        private static TimeSpan roundTime;
+        private static DateTime startTime;
+        private static DateTime pauseTime;
 
         // C:\Windows\Media
             // Windows User Account Control.wav
@@ -34,10 +36,11 @@ namespace Turn_Timer_WPF.Models
             // Windows Unlock.wav
             // Windows Critical Stop.wav
             // Windows Battery Critical.wav
-        // Player sounds and other values.
+            // Player sounds and other values.
         private static SoundPlayer player = new SoundPlayer( @"C:\Windows\Media\Windows User Account Control.wav" );
         private static bool isPlaying = false;
         private static Thread playerThread; 
+
 
         /// <summary>
         /// Instantialize the timer with default values.
@@ -57,13 +60,16 @@ namespace Turn_Timer_WPF.Models
         {
             // Get new values for the timer.
             overflow = new TimeSpan( 0, 0, Properties.Settings.Default.firstPlayerExtraTime );
+            int intRoundTime = ( int ) Properties.Settings.Default.roundTime;
             resetTime = ( Properties.Settings.Default.timeIsSeconds ) ?
-                new TimeSpan( 0, 0, Properties.Settings.Default.roundTime ) : new TimeSpan( 0, Properties.Settings.Default.roundTime, 0 );
+                new TimeSpan( 0, 0, intRoundTime ) : new TimeSpan( 0, intRoundTime, ( int ) ( Properties.Settings.Default.roundTime % intRoundTime * 60 ) );
 
             // Start the timer.
-            roundTime = resetTime + overflow;
+            roundTime = ( resetTime + overflow );
+            startTime = DateTime.Now;
+
             _timer.Start();
-            Console.Write( "check _timer" );
+            //Console.Write( "check _timer" );
             // Change input control values.
             ViewModel.vmInstance.startGoBtn = Properties.Settings.Default.beginText;
             ViewModel.vmInstance.OnPropertyChanged( "startGoBtn" );
@@ -80,6 +86,7 @@ namespace Turn_Timer_WPF.Models
         {
             if ( pause )
             {
+                pauseTime = DateTime.Now;
                 // Stop the timer.
                 _timer.IsEnabled = false;
                 ViewModel.vmInstance.startGoBtn = "CONT.";
@@ -87,6 +94,7 @@ namespace Turn_Timer_WPF.Models
             }
             else
             {
+                startTime += DateTime.Now - pauseTime;
                 // Restart the timer.
                 _timer.IsEnabled = true;
                 ViewModel.vmInstance.startGoBtn = Properties.Settings.Default.beginText;
@@ -119,13 +127,17 @@ namespace Turn_Timer_WPF.Models
         /// </summary>
         public static void GoTimer()
         {
+            TimeSpan checkTime = roundTime - ( DateTime.Now - startTime );
+
             overflow = new TimeSpan( 0, 0, 0 );
-            // && (resetTime - roundTime).TotalSeconds > 0
-            if ( Properties.Settings.Default.useTimeDiff && roundTime.TotalSeconds > 0 && roundTime < resetTime )
-                overflow = resetTime - roundTime;
+            
+            if ( Properties.Settings.Default.useTimeDiff &&
+                checkTime.Seconds > 0 && checkTime < resetTime )
+                overflow = resetTime - checkTime;
 
             // Increase the time that the timer now has to count down.
             roundTime = resetTime + overflow;
+            startTime = DateTime.Now;
 
             if ( !_timer.IsEnabled )
             {
@@ -138,6 +150,10 @@ namespace Turn_Timer_WPF.Models
                 ViewModel.vmInstance.OnPropertyChanged( "stopVis" );
             }
 
+            ViewModel.vmInstance.stopLbl = "";
+            ViewModel.vmInstance.OnPropertyChanged( "stopLbl" );
+            ViewModel.vmInstance.stopVis = System.Windows.Visibility.Hidden.ToString();
+            ViewModel.vmInstance.OnPropertyChanged( "stopVis" );
             player.Stop();
         }
 
@@ -148,18 +164,21 @@ namespace Turn_Timer_WPF.Models
         /// <param name="e"></param>
         private void timer_Tick( object sender, EventArgs e )
         {
-            if ( roundTime.TotalMilliseconds > 0 )
-            {
-                // There is time yet on the clock.  Decrement the time.
-                roundTime = roundTime.Add( TimeSpan.FromMilliseconds( -10 ) );
+            TimeSpan passedTime = DateTime.Now - startTime;
 
-                ViewModel.vmInstance.turnTime = string.Format("{0:00}:{1:00}.{2:000}", roundTime.Minutes, roundTime.Seconds, roundTime.Milliseconds);
+            if ( passedTime <= roundTime )
+            {
+                TimeSpan nTime = ( roundTime - passedTime );
+                ViewModel.vmInstance.turnTime = string.Format( "{0:00}:{1:00}.{2:000}",
+                    nTime.Minutes,
+                    nTime.Seconds,
+                    nTime.Milliseconds );
                 ViewModel.vmInstance.OnPropertyChanged( "turnTime" );
             }
             else
             {
                 // There is no more time.
-                // TODO : Add beeping!  Add Flashing!
+                // TODO : Add better beeping!  Add Flashing!
 
                 ViewModel.vmInstance.turnTime = "00:00.000";
                 ViewModel.vmInstance.OnPropertyChanged( "turnTime" );
@@ -169,7 +188,7 @@ namespace Turn_Timer_WPF.Models
 
                 ViewModel.vmInstance.stopVis = System.Windows.Visibility.Visible.ToString();
                 ViewModel.vmInstance.OnPropertyChanged( "stopVis" );
-                
+
                 if ( !isPlaying && !Properties.Settings.Default.mutedSound )
                 {
                     // Play a beeping sound.

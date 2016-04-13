@@ -26,14 +26,13 @@ namespace Turn_Timer_WPF.Models
                 System.Windows.Controls.Button btn = ( System.Windows.Controls.Button ) formBtn;
                 try
                 {
-                    var settingsWindow = System.Windows.Application.Current.Windows[1];
                     switch ( btn.Content.ToString() )
                     {
                         case "Save":
                             SaveSettings();
                             break;
                         case "Cancel":
-                            settingsWindow.Close();
+                            System.Windows.Application.Current.Windows[1].Close();
                             break;
                         default:
                             throw new NotImplementedException( "Unrecognized Button." );
@@ -54,15 +53,33 @@ namespace Turn_Timer_WPF.Models
         /// </summary>
         private static void SaveSettings()
         {
-            Properties.Settings.Default.roundTime = Convert.ToInt16(ViewModel_Settings.vmInstance.roundTime);
-            Properties.Settings.Default.firstPlayerExtraTime = Convert.ToInt16( ViewModel_Settings.vmInstance.extraTime );
-            Properties.Settings.Default.timeIsSeconds = ViewModel_Settings.vmInstance.isSeconds;
-            Properties.Settings.Default.mutedSound = ViewModel_Settings.vmInstance.muted;
-            Properties.Settings.Default.useTimeDiff = ViewModel_Settings.vmInstance.useDiff;
+            float rTime;
 
-            // Audio confirmation of changes.
-            if ( !Properties.Settings.Default.mutedSound )
-                System.Media.SystemSounds.Beep.Play();
+            if ( float.TryParse( ViewModel_Settings.vmInstance.roundTime, out rTime ) )
+            {
+                Properties.Settings.Default.roundTime = rTime;
+                Properties.Settings.Default.firstPlayerExtraTime = Convert.ToInt16( ViewModel_Settings.vmInstance.extraTime );
+                Properties.Settings.Default.timeIsSeconds = ViewModel_Settings.vmInstance.isSeconds;
+                Properties.Settings.Default.mutedSound = ViewModel_Settings.vmInstance.muted;
+                Properties.Settings.Default.useTimeDiff = ViewModel_Settings.vmInstance.useDiff;
+
+                // Audio confirmation of changes.
+                if ( !Properties.Settings.Default.mutedSound )
+                    System.Media.SystemSounds.Beep.Play();
+
+                System.Windows.Application.Current.Windows[1].Close();
+            }
+            else
+            {
+                Properties.Settings.Default.firstPlayerExtraTime = Convert.ToInt16( ViewModel_Settings.vmInstance.extraTime );
+                Properties.Settings.Default.timeIsSeconds = ViewModel_Settings.vmInstance.isSeconds;
+                Properties.Settings.Default.mutedSound = ViewModel_Settings.vmInstance.muted;
+                Properties.Settings.Default.useTimeDiff = ViewModel_Settings.vmInstance.useDiff;
+
+                // Audio confirmation of changes.
+                if ( !Properties.Settings.Default.mutedSound )
+                    System.Media.SystemSounds.Exclamation.Play();
+            }
         }
 
     }
